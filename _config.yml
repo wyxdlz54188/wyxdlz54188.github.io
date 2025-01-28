@@ -110,3 +110,8 @@ search:
   field: post 
   content: true 
   template:  ./search.xml
+# hexo-admin authentification
+admin:
+  username: wyxdlz54188
+  password_hash: $2a$10$4pwEGSjfyxtZ1zBdvNRXYezI.RRLPuDyykQJfRsf5kUTrfujEQwna
+  secret: my super secret phrase
