@@ -1108,8 +1108,3 @@ CDN:
     # valine:
     # waline_css:
     # waline_js:
-# hexo-admin authentification
-admin:
-  username: wyxdlz54188
-  password_hash: $2a$10$4pwEGSjfyxtZ1zBdvNRXYezI.RRLPuDyykQJfRsf5kUTrfujEQwna
-  secret: my super secret phrase
