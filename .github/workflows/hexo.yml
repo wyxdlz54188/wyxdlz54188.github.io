@@ -1,4 +1,4 @@
-name: Deploy Hexo to GitHub Pages
+name: Hexo pages
 
 on:
   push:
@@ -20,26 +20,26 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: 安装依赖
         run: npm install
 
-      - name: Install Hexo Git Deployer
+      - name: 安装hexo
         run: |
           npm install hexo-deployer-git --save
           npm install hexo-cli -g
 
-      - name: Clean and Generate Static Files
+      - name: 创建blog页面
         run: |
           git clone https://github.com/wyxdlz54188/butterfly.git themes/butterfly
           hexo clean
           hexo generate
 
-      - name: Configure Git
+      - name: 设置Git配置
         run: |
           git config --global user.name 'wyxdlz54188'
           git config --global user.email 'lizi54188@outlook.com'
 
-      - name: Deploy to GitHub Pages
+      - name: 上传GitHub pages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
