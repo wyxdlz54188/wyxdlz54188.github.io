@@ -1,0 +1,78 @@
+title: hexo gitalk 坑点
+tags: Hexo博客
+categories: 淫奇技巧
+author: wyxdlz
+date: 2025-01-24 22:26:00
+top:
+---
+### gitalk坑点
+
+## 一.文件配置
+
+1.准备工作
+
+• GitHub 账号：确保你有一个 GitHub 账号。
+
+• GitHub 仓库：创建一个公共仓库用于存储评论。
+
+• GitHub OAuth 应用：在 GitHub 的 Developer Settings 中创建一个 OAuth 应用。
+
+• Application name：随意填写，例如“Gitalk Comments”。
+
+• Homepage URL：填写你的博客首页 URL。
+
+• Authorization callback URL：填写你的博客首页 URL。
+
+• 完成注册后，记下生成的`Client ID`和`Client Secret`。
+
+以上步骤即可完成 Gitalk 在 Butterfly 主题中的启用。如果遇到问题，请检查配置文件和代码是否正确，或者参考相关教程。
+
+
+
+
+打开`yourblog/themes/butterfly(主题)/_config.yml`文件，搜索`comments`找到以下内容
+```
+comments:
+  # Up to two comments system, the first will be shown as default
+  # Leave it empty if you don't need comments
+  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
+  # Format of two comments system : Disqus,Waline
+  use: Gitalk,Valine  # use内输入Gitalk ，这里做演示Valine可不用
+  # Display the comment name next to the button
+  text: true # 按照李子的配置
+  # Lazyload: The comment system will be load when comment element enters the browser's viewport.
+  # If you set it to true, the comment count will be invalid
+  lazyload: true # 按照李子的配置
+  # Display comment count in post's top_img
+  count: true # 按照李子的配置
+  # Display comment count in Home Page
+  card_post_count: false # 按照李子的配置
+  ```
+  
+  想必大家已经设置完毕了吧！
+  继续搜索`Gitalk`
+  ```
+  # Gitalk
+# https://github.com/gitalk/gitalk
+gitalk:
+  client_id: Ov23liCn3Ikp2ztozmsj # 每个人都有所不同，添github app 给的
+  client_secret: fa83990c50a9e1f9cd0d56e87f8a1058569684b5 # 没人有所不同，添github app给的
+  repo: hexopl # gittalk评论仓库 单独见一个仓库
+  owner: wyxdlz54188 # 所有者名称github
+  admin: wyxdlz54188 # 所有者名称github
+  language: zh-CN # 照李子改就是
+  perPage: 10 # Pagination size, with maximum 100.
+  distractionFreeMode: false # Facebook-like distraction free mode.
+  pagerDirection: last # Comment sorting direction, available values are last and first.
+  createIssueManually: false # Gitalk will create a corresponding github issue for your every single page automatically
+  option:
+  ```
+  
+  以上没有特殊标记的都照改就是啦
+  
+## 二、李子遇到的报错
+
+说句实在话按照其它的教程改来改去还是那两个报错没任什么问题，怎么办呢
+很简单
+
+开始以为是`OAuth Application`中我的路径写错了，后来发现没啥毛病。然后`使用了GitHub登录`了还是存在这个问题，我再到我的仓库里面去看，发现`在issues下`根本没有一条issue。按理来说`只要GitHub账号第一次登录了就会给当前文章初始化一个issue`，我突然想起了文章的`初始化权限问题`，`而且我GitHub账号有几个`，会不会是使用 没有仓库所有权限的账号 登录。然后，使用##所有者账号##登录，发现##能够评论##了，而且在仓库的issues中多了一条属于该文章的issue。
