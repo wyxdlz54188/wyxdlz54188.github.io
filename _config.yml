@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: ?????
+title: 李子的博客
 subtitle: ''
 description: ''
 keywords:
@@ -102,11 +102,11 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repository: https://github.com/wyxdlz54188/hexo.git
+  repository: https://github.com/wyxdlz54188/wyxdlz54188.github.io.git
   branch: gh-pages
 # search
 search:
   path: search.xml
-  field: post # post:?????page:?????all:????
-  content: true # ????????????????
+  field: post 
+  content: true 
   template:  ./search.xml
