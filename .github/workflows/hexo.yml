@@ -27,7 +27,6 @@ jobs:
         run: |
           npm install hexo-deployer-git --save
           npm install hexo-cli -g
-          npm install hexo-asset-image --save
       - name: 创建blog页面
         run: |
           git clone https://github.com/wyxdlz54188/butterfly.git themes/butterfly
