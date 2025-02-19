@@ -44,8 +44,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           ls
-          cd pubilc
-          cd 公共
+          cd public
           git init
           git add -A
           git commit -m "Create by workflows"
