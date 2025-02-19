@@ -25,6 +25,7 @@ jobs:
 
       - name: 安装hexo
         run: |
+          npm run build
           npm install hexo-deployer-git --save
           npm install hexo-cli -g
           npm install --save hexo-blog-encrypt
