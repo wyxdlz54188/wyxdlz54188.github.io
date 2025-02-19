@@ -43,7 +43,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          hexo -d
+          cd public
           git init
           git add -A
           git commit -m "Create by workflows"
