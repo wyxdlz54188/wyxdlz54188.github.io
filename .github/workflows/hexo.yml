@@ -43,6 +43,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          ls
           cd public
           git init
           git add -A
