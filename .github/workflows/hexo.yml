@@ -28,6 +28,7 @@ jobs:
           npm install hexo-deployer-git --save
           npm install hexo-cli -g
           npm install --save hexo-blog-encrypt
+          npm install hexo-renderer-pug hexo-renderer-stylus
       - name: 创建blog页面
         run: |
           git clone https://github.com/wyxdlz54188/butterfly.git themes/butterfly
