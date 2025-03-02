@@ -104,12 +104,7 @@ deploy:
   type: git
   repository: https://github.com/wyxdlz54188/wyxdlz54188.github.io.git
   branch: gh-pages
-# search
-search:
-  path: search.xml
-  field: post 
-  content: true 
-  template:  ./search.xml
+
 # hexo-admin authentification
 admin:
   username: wyxdlz54188
