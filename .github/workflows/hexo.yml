@@ -35,6 +35,7 @@ jobs:
           git clone https://github.com/wyxdlz54188/butterfly.git themes/butterfly
           hexo clean
           hexo generate
+          ls
 
       - name: 设置Git配置
         run: |
