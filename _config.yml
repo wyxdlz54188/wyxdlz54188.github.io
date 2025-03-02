@@ -109,7 +109,7 @@ search:
   path: search.xml
   field: post 
   content: true 
-  template:  ./search.xml
+  template:  ./公共/search.xml
 # hexo-admin authentification
 admin:
   username: wyxdlz54188
