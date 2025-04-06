@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>buildroot 打包 rootfs | 李子的博客</title><meta name="author" content="wyxdlz54188"><meta name="copyright" content="wyxdlz54188"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Cvitek buildroot 打包 rootfs 流程介绍 基于 https:&#x2F;&#x2F;github.com&#x2F;sophgo&#x2F;cvi_mmf_sdk&#x2F;tree&#x2F;v4.1.0 的实现。  概述在 cvi_mmf_sdk 中，支持两种生成 rootfs 的方式：  基于 ramdisk 目录下的文件系统。 基于 buildroot 打包生成文件系统。  前者仅保留了常用的一些工具，因此">
+<meta property="og:type" content="article">
+<meta property="og:title" content="buildroot 打包 rootfs">
+<meta property="og:url" content="https://bloglizi.dpdns.org/2023/11/16/Cvitek-buildroot/index.html">
+<meta property="og:site_name" content="李子的博客">
+<meta property="og:description" content="Cvitek buildroot 打包 rootfs 流程介绍 基于 https:&#x2F;&#x2F;github.com&#x2F;sophgo&#x2F;cvi_mmf_sdk&#x2F;tree&#x2F;v4.1.0 的实现。  概述在 cvi_mmf_sdk 中，支持两种生成 rootfs 的方式：  基于 ramdisk 目录下的文件系统。 基于 buildroot 打包生成文件系统。  前者仅保留了常用的一些工具，因此">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bloglizi.dpdns.org/img/avatar.png">
+<meta property="article:published_time" content="2023-11-16T23:45:42.000Z">
+<meta property="article:modified_time" content="2023-12-09T23:45:42.000Z">
+<meta property="article:author" content="wyxdlz54188">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Buildroot">
+<meta property="article:tag" content="Rootfs">
+<meta property="article:tag" content="Cvitek">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloglizi.dpdns.org/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "buildroot 打包 rootfs",
+  "url": "https://bloglizi.dpdns.org/2023/11/16/Cvitek-buildroot/",
+  "image": "https://bloglizi.dpdns.org/img/avatar.png",
+  "datePublished": "2023-11-16T23:45:42.000Z",
+  "dateModified": "2023-12-09T23:45:42.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "wyxdlz54188",
+      "url": "https://bloglizi.dpdns.org/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://bloglizi.dpdns.org/2023/11/16/Cvitek-buildroot/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":"ture","top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: wyxdlz54188","link":"链接: ","source":"来源: 李子的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'buildroot 打包 rootfs',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">李子的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">buildroot 打包 rootfs</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">buildroot 打包 rootfs</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-11-16T23:45:42.000Z" title="发表于 2023-11-16 23:45:42">2023-11-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-12-09T23:45:42.000Z" title="更新于 2023-12-09 23:45:42">2023-12-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="Cvitek-buildroot-打包-rootfs-流程介绍"><a href="#Cvitek-buildroot-打包-rootfs-流程介绍" class="headerlink" title="Cvitek buildroot 打包 rootfs 流程介绍"></a>Cvitek buildroot 打包 rootfs 流程介绍</h2><blockquote>
+<p>基于 <a target="_blank" rel="noopener" href="https://github.com/sophgo/cvi_mmf_sdk/tree/v4.1.0">https://github.com/sophgo/cvi_mmf_sdk&#x2F;tree&#x2F;v4.1.0</a> 的实现。</p>
+</blockquote>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在 <a target="_blank" rel="noopener" href="https://github.com/sophgo/cvi_mmf_sdk">cvi_mmf_sdk</a> 中，支持两种生成 rootfs 的方式：</p>
+<ul>
+<li>基于 ramdisk 目录下的文件系统。</li>
+<li>基于 buildroot 打包生成文件系统。</li>
+</ul>
+<p>前者仅保留了常用的一些工具，因此生成的文件系统较小，不过新增工具比较麻烦。后者方便用户自己控制需要打包哪些工具。</p>
+<p><strong>默认使用第一种方式来生成文件系统</strong>，可通过在板子的配置文件中加上 <code>CONFIG_BUILDROOT_FS=y</code> （如 <a target="_blank" rel="noopener" href="https://github.com/sophgo/cvi_mmf_sdk/blob/v4.1.0/build/boards/cv181x/cv1812cp_sophpi_duo_sd/cv1812cp_sophpi_duo_sd_defconfig#L30">cv1812cp_sophpi_duo_sd_defconfig#L30</a> 中的例子），以启用 <code>buildroot</code> 来生成文件系统。</p>
+<h2 id="rootfs-打包流程说明"><a href="#rootfs-打包流程说明" class="headerlink" title="rootfs 打包流程说明"></a>rootfs 打包流程说明</h2><p>在 <code>source cvisetup.sh</code> 之后，就可以使用 <code>pack_rootfs</code> 命令来打包文件系统了。它本质上是定义在 <a target="_blank" rel="noopener" href="https://github.com/sophgo/cvi_mmf_sdk/blob/v4.1.0/build/common_functions.sh#L107">common_functions.sh</a> 中的一个 shell 函数，在设置必要的环境变量后，通过 <code>make rootfs</code> 完成打包的相关处理。主要有3个步骤：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">rootfs-prepare:</span></span><br><span class="line">	<span class="comment"># 这里将所需要的打包文件都复制到 $(OUTPUT_DIR)/rootfs 这个目录中</span></span><br><span class="line"></span><br><span class="line"><span class="section">rootfs-pack:rootfs-prepare</span></span><br><span class="line"><span class="section">rootfs-pack:</span></span><br><span class="line">	<span class="comment"># 完成一些清理工作，去掉无用的文件或者 strip ko文件等</span></span><br><span class="line">	<span class="comment"># 制作文件系统</span></span><br><span class="line"></span><br><span class="line"><span class="section">rootfs:rootfs-pack</span></span><br><span class="line"><span class="section">rootfs:</span></span><br><span class="line">	<span class="comment"># 文件系统在 rootfs-pack 中已制作完成，</span></span><br><span class="line">	<span class="comment"># 这里仅对该文件再进行封装一个指定的 Header，烧录到 flash 时会检查该 Header。</span></span><br><span class="line">	<span class="comment"># 若无Header，或Header信息不正确，就会跳过该文件的烧录。Header本身并不会烧录到 flash。</span></span><br><span class="line">	<span class="comment"># 如果是 SD 卡启动的方式，则不需要封装。</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(STORAGE_TYPE)</span>, sd)</span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> raw2cimg ,rootfs.<span class="variable">$(STORAGE_TYPE)</span>)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+
+<p>上面是基于 <code>ramdisk</code> 目录制作文件系统的流程，基于 <code>buildroot</code> 的流程也是类似的：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">br-rootfs-prepare:</span></span><br><span class="line">	<span class="comment"># 将必要的文件复制到 buildroot 目录下的 overlay 中，</span></span><br><span class="line">	<span class="comment"># buildroot 制作文件系统时会将该目录下的文件也包含进去。</span></span><br><span class="line"></span><br><span class="line"><span class="section">br-rootfs-pack:</span></span><br><span class="line">	<span class="comment"># 制作 ext4 的文件系统</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在 Makefile 中，会检查 CONFIG_BUILDROOT_FS 配置是否启用</span></span><br><span class="line"><span class="comment"># 若启用了，则通过 br-rootfs-pack 调用 buildroot 来制作文件系统。</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CONFIG_BUILDROOT_FS)</span>,y)</span><br><span class="line"><span class="section">rootfs:br-rootfs-prepare</span></span><br><span class="line"><span class="section">rootfs:br-rootfs-pack</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="section">rootfs:rootfs-pack</span></span><br><span class="line"><span class="section">rootfs:</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> print_target)</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(STORAGE_TYPE)</span>, sd)</span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> raw2cimg ,rootfs.<span class="variable">$(STORAGE_TYPE)</span>)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+
+<p>有了基本流程的概念后，下面展开分析基于 <code>buildroot</code> 制作文件系统的流程。</p>
+<h3 id="br-rootfs-prepare"><a href="#br-rootfs-prepare" class="headerlink" title="br-rootfs-prepare"></a>br-rootfs-prepare</h3><p><code>br-rootfs-prepare</code> 的主要工作是将需要打包到文件系统中的文件复制到指定的目录下，以便 buildroot 在制作文件系统时，能将这些文件一同打包。一般这些文件包括：</p>
+<ul>
+<li><code>build_kernel</code> 得到的 <code>.ko</code> 文件；</li>
+<li><code>build_middleware</code> 得到的动态库文件；</li>
+<li>存放在 <code>middlleware</code> 中以 <code>ko</code> 或 <code>so</code> 形式发布的一些模块，如：<a target="_blank" rel="noopener" href="https://github.com/sophgo/cvi_mmf_sdk/tree/v4.1.0/middleware/v2/cv180x/ko">middleware&#x2F;v2&#x2F;cv180x&#x2F;ko</a>。</li>
+</ul>
+<p>在 <code>cvisetup.sh</code> 中将需要的路径导出为环境变量，主要有：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># buildroot 仓库所在路径</span></span><br><span class="line"><span class="built_in">export</span> BR_DIR=<span class="string">&quot;<span class="variable">$TOP_DIR</span>&quot;</span>/buildroot-2021.05</span><br><span class="line"></span><br><span class="line"><span class="comment"># overlay 路径，用于存储需要打包到文件系统中的文件</span></span><br><span class="line"><span class="built_in">export</span> BR_OVERLAY_DIR=<span class="variable">$&#123;BR_DIR&#125;</span>/board/cvitek/<span class="variable">$&#123;CHIP_ARCH&#125;</span>/overlay</span><br><span class="line"></span><br><span class="line"><span class="comment"># buildroot 的配置文件名称，即：</span></span><br><span class="line"><span class="comment"># cvitek_CV180X_musl_riscv64_defconfig  cvitek_CV181X_musl_riscv64_defconfig</span></span><br><span class="line"><span class="built_in">export</span> BR_BOARD=cvitek_<span class="variable">$&#123;CHIP_ARCH&#125;</span>_<span class="variable">$&#123;SDK_VER&#125;</span></span><br><span class="line"><span class="built_in">export</span> BR_DEFCONFIG=<span class="variable">$&#123;BR_BOARD&#125;</span>_defconfig</span><br><span class="line"></span><br><span class="line"><span class="comment"># buildroot 生成的文件系统的保存路径</span></span><br><span class="line"><span class="built_in">export</span> BR_ROOTFS_DIR=<span class="string">&quot;<span class="variable">$OUTPUT_DIR</span>&quot;</span>/tmp-rootfs</span><br></pre></td></tr></table></figure>
+
+<p>上述环境变量定义了文件复制的目标位置，在 <code>br-rootfs-prepare</code> 只进行复制即可！</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">br-rootfs-prepare:</span></span><br><span class="line">	<span class="comment"># 复制 ko 以及相关 lib 到 buildroot 相关路径</span></span><br><span class="line">	$&#123;Q&#125;mkdir -p <span class="variable">$(BR_OVERLAY_DIR)</span>/mnt/system</span><br><span class="line">	$&#123;Q&#125;cp -arf $&#123;SYSTEM_OUT_DIR&#125;/* <span class="variable">$(BR_OVERLAY_DIR)</span>/mnt/system/</span><br><span class="line">	<span class="comment"># 对 ko 以及相关动态库 进行 strip，以缩小文件系统大小</span></span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -name <span class="string">&quot;*.ko&quot;</span> -type f -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_KERNEL)</span>strip --strip-unneeded &#123;&#125; \;</span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -name <span class="string">&quot;*.so*&quot;</span> -type f -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_KERNEL)</span>strip --strip-all &#123;&#125; \;</span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -executable -type f ! -name <span class="string">&quot;*.sh&quot;</span> ! -path <span class="string">&quot;*etc*&quot;</span> ! -path <span class="string">&quot;*.ko&quot;</span> -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_SDK)</span>strip --strip-all &#123;&#125; 2&gt;/dev/null \;</span><br></pre></td></tr></table></figure>
+
+<h3 id="br-rootfs-pack"><a href="#br-rootfs-pack" class="headerlink" title="br-rootfs-pack"></a>br-rootfs-pack</h3><p><code>br-rootfs-pack</code> 的主要工作是指定 buildroot 的配置文件，完成 buildroot 的编译工作，以得到需要的文件系统。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">br-rootfs-pack:export TARGET_OUTPUT_DIR=<span class="variable">$(BR_DIR)</span>/output/<span class="variable">$(BR_BOARD)</span></span></span><br><span class="line"><span class="section">br-rootfs-pack:</span></span><br><span class="line">	<span class="comment"># 指定配置文件 和 编译工具链路径</span></span><br><span class="line">	$&#123;Q&#125;<span class="variable">$(MAKE)</span> -C <span class="variable">$(BR_DIR)</span> <span class="variable">$(BR_DEFCONFIG)</span> BR2_TOOLCHAIN_EXTERNAL_PATH=<span class="variable">$(CROSS_COMPILE_PATH)</span></span><br><span class="line">	<span class="comment"># 编译得到文件系统，位于 $(TARGET_OUTPUT_DIR)/images/rootfs.ext4</span></span><br><span class="line">	$&#123;Q&#125;<span class="variable">$(MAKE)</span> -j$&#123;NPROC&#125; -C <span class="variable">$(BR_DIR)</span></span><br><span class="line">	<span class="comment"># $&#123;Q&#125;rm -rf $(BR_ROOTFS_DIR)/*</span></span><br><span class="line">	<span class="comment"># 将文件系统从 buildroot 路径，复制到 SDK 统一的输出路径 $(OUTPUT_DIR)</span></span><br><span class="line"> 	$&#123;Q&#125;cp <span class="variable">$(TARGET_OUTPUT_DIR)</span>/images/rootfs.ext4 <span class="variable">$(OUTPUT_DIR)</span>/rawimages/rootfs_ext4.<span class="variable">$(STORAGE_TYPE)</span></span><br><span class="line"> 	<span class="comment"># 封装 Header，这是烧录到 flash 的必要步骤</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> raw2cimg ,rootfs_ext4.<span class="variable">$(STORAGE_TYPE)</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>至此，就得到了 buildroot 编译的文件系统，不过需要注意的是：<strong>该文件系统中仅包含了 <code>ko</code> 和 动态库，ramdisk 中的一些开机自动运行的脚本并未包含进文件系统中，因此没有自动加载 ko 等流程</strong></p>
+<h2 id="buildroot-配置文件说明"><a href="#buildroot-配置文件说明" class="headerlink" title="buildroot 配置文件说明"></a>buildroot 配置文件说明</h2><p>目前 <code>buildroot/configs</code> 目录下提供了 <code>cv180x, cv181x</code> 的基础配置文件，用户可在该配置文件的基础上进行修改，部分参数与上面介绍的编译流程或编译工具链有关，不可随意更改。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 工具链相关的配置。</span></span><br><span class="line">BR2_TOOLCHAIN_*</span><br><span class="line">BR2_TOOLCHAIN_EXTERNAL_PREFIX=<span class="string">&quot;riscv64-unknown-linux-musl&quot;</span></span><br><span class="line">BR2_TARGET_LDFLAGS=<span class="string">&quot;-mcpu=c906fdv -march=rv64imafdcv0p7xthead -mcmodel=medany -mabi=lp64d&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. overlay 路径</span></span><br><span class="line">BR2_ROOTFS_OVERLAY=<span class="string">&quot;board/cvitek/CV181X/overlay&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="网络问题"><a href="#网络问题" class="headerlink" title="网络问题"></a>网络问题</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 国内镜像</span></span><br><span class="line">BR2_BACKUP_SITE=<span class="string">&quot;http://sources.buildroot.net&quot;</span></span><br><span class="line">BR2_KERNEL_MIRROR=<span class="string">&quot;https://mirrors.aliyun.com/linux-kernel&quot;</span></span><br><span class="line">BR2_GNU_MIRROR=<span class="string">&quot;https://mirrors.aliyun.com/gnu&quot;</span></span><br><span class="line">BR2_LUAROCKS_MIRROR=<span class="string">&quot;https://luarocks.cn&quot;</span></span><br><span class="line">BR2_CPAN_MIRROR=<span class="string">&quot;https://mirrors.aliyun.com/CPAN&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>有些仓库设置上面的代理也没用😑，就需要<strong>手动下载后，放到 <code>buildroot-2021.05/dl</code> 对应模块的文件夹下</strong>。</p>
+<h3 id="打包-public-工具问题"><a href="#打包-public-工具问题" class="headerlink" title="打包 public 工具问题"></a>打包 public 工具问题</h3><p>在使用 ramdisk 方式打包文件系统时，有从好几个地方复制文件。一般来说，既然选择用 buildroot 了，一些三方工具都直接用 buildroot 编译的就好，不需要拷贝。<strong>不过像 S11defer_init 这个文件，又必须从 ramdisk 拷贝。</strong></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从 ramdisk/rootfs/public 下拷贝选中的工具</span></span><br><span class="line"><span class="keyword">define</span> TARGET_PACKAGE_INSTALL_CMD</span><br><span class="line">	@echo &#x27;TARGET PACKAGE OUTPUT DIR=<span class="variable">$(OUTPUT_DIR)</span>/rootfs&#x27;;\</span><br><span class="line">	<span class="variable">$(<span class="built_in">foreach</span> t,<span class="variable">$(TARGET_PACKAGES)</span>,\</span></span><br><span class="line"><span class="variable">		$&#123;Q&#125;cd <span class="variable">$(TOP_DIR)</span>/ramdisk/rootfs/public/<span class="variable">$(t)</span>/<span class="variable">$(packages_arch)</span>/ &amp;&amp; \</span></span><br><span class="line"><span class="variable">		$&#123;Q&#125;find . \( ! -type d ! -name <span class="string">&quot;*.a&quot;</span> ! -path <span class="string">&quot;*include*&quot;</span> ! -name <span class="string">&quot;.gitkeep&quot;</span> \)</span> \</span><br><span class="line">			-printf &#x27;Copy Package file <span class="variable">$(TOP_DIR)</span>/ramdisk/rootfs/public/<span class="variable">$(t)</span>/<span class="variable">$(packages_arch)</span>/%p\n&#x27; \</span><br><span class="line">			-exec cp -a --remove-destination --parents &#x27;&#123;&#125;&#x27; <span class="variable">$(OUTPUT_DIR)</span>/rootfs/ \; ; )</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="section">rootfs-prepare:<span class="variable">$(OUTPUT_DIR)</span>/rootfs</span></span><br><span class="line">	<span class="comment"># Copy rootfs</span></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(CONFIG_FASTBOOT)</span>,y)</span><br><span class="line">	$&#123;Q&#125;cp -a --remove-destination <span class="variable">$(RAMDISK_PATH)</span>/rootfs/<span class="variable">$(ROOTFS_BASE)</span>_shrink/* <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	$&#123;Q&#125;cp -a --remove-destination <span class="variable">$(RAMDISK_PATH)</span>/rootfs/<span class="variable">$(ROOTFS_BASE)</span>/* <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Copy arch overlay rootfs</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="string">&quot;$(wildcard <span class="variable">$(SDK_VER_FOLDER_PATH)</span>)&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	$&#123;Q&#125;cp -r <span class="variable">$(SDK_VER_FOLDER_PATH)</span>/* <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Copy chip overlay rootfs</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="string">&quot;$(wildcard <span class="variable">$(CHIP_FOLDER_PATH)</span>)&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	$&#123;Q&#125;cp -r <span class="variable">$(CHIP_FOLDER_PATH)</span>/* <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Copy project overlay rootfs</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="string">&quot;$(wildcard <span class="variable">$(CUST_FOLDER_PATH)</span>)&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	$&#123;Q&#125;cp -r <span class="variable">$(CUST_FOLDER_PATH)</span>/* <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 打包 menuconfig 中配置的一些三方工具。比如 ntp/dropbear/python3 等</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> TARGET_PACKAGE_INSTALL_CMD)</span></span><br><span class="line">	<span class="comment"># 设置其他</span></span><br><span class="line">	$&#123;Q&#125;$&#123;BUILD_PATH&#125;/boards/default/rootfs_script/prepare_rootfs.sh <span class="variable">$(OUTPUT_DIR)</span>/rootfs</span><br><span class="line">	<span class="comment"># Generate S10_automount</span></span><br><span class="line">	$&#123;Q&#125;python3 <span class="variable">$(COMMON_TOOLS_PATH)</span>/image_tool/create_automount.py <span class="variable">$(FLASH_PARTITION_XML)</span> <span class="variable">$(OUTPUT_DIR)</span>/rootfs/etc/init.d/</span><br><span class="line">	<span class="comment"># Generate /etc/fw_env.config</span></span><br><span class="line">	$&#123;Q&#125;python3 <span class="variable">$(COMMON_TOOLS_PATH)</span>/image_tool/mkcvipart.py <span class="variable">$(FLASH_PARTITION_XML)</span> <span class="variable">$(OUTPUT_DIR)</span>/rootfs/etc/ --fw_env</span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(CONFIG_FASTBOOT)</span>,y)</span><br><span class="line">	if [ -f <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/fastboot ]; then $&#123;Q&#125;rm -rf <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/fastboot ; fi ;</span><br><span class="line">	if [ -f <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/S11defer_init ]; then $&#123;Q&#125;rm -rf <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/S11defer_init; fi ;</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+
+<p>上面从几个路径拷了文件，在使用 buildroot 时，可以选择只从 Project 路径拷贝。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CUST_FOLDER_NAME = cv1813ha_wevb_0007a_emmc</span><br><span class="line">CHIP_FOLDER_PATH = /data/song.yu/youdao2/v4.2.0-intl/ramdisk/rootfs/overlay/cv1813ha</span><br><span class="line">SDK_VER_FOLDER_PATH = /data/song.yu/youdao2/v4.2.0-intl/ramdisk/rootfs/overlay/cv181x_32bit</span><br><span class="line">CUST_FOLDER_PATH = /data/song.yu/youdao2/v4.2.0-intl/ramdisk/rootfs/overlay/cv1813ha_wevb_0007a_emmc</span><br></pre></td></tr></table></figure>
+
+<p>将必需的文件放在 <code>ramdisk/rootfs/overlay/cv1813ha_wevb_0007a_emmc</code> 目录下就行。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">br-rootfs-prepare:</span></span><br><span class="line">	<span class="variable">$(<span class="built_in">call</span> print_target)</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Copy project overlay rootfs, like ramdisk/rootfs/overlay/cv1813ha_wevb_0007a_emmc</span></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="string">&quot;$(wildcard <span class="variable">$(CUST_FOLDER_PATH)</span>)&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	$&#123;Q&#125;cp -r <span class="variable">$(CUST_FOLDER_PATH)</span>/* <span class="variable">$(BR_OVERLAY_DIR)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># Generate /etc/inid.d/S10automount</span></span><br><span class="line">	$&#123;Q&#125;python3 <span class="variable">$(COMMON_TOOLS_PATH)</span>/image_tool/create_automount.py <span class="variable">$(FLASH_PARTITION_XML)</span> <span class="variable">$(BR_OVERLAY_DIR)</span>/etc/init.d/</span><br><span class="line">	<span class="comment"># Generate /etc/fw_env.config</span></span><br><span class="line">	$&#123;Q&#125;python3 <span class="variable">$(COMMON_TOOLS_PATH)</span>/image_tool/mkcvipart.py <span class="variable">$(FLASH_PARTITION_XML)</span> <span class="variable">$(BR_OVERLAY_DIR)</span>/etc/ --fw_env</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(CONFIG_FASTBOOT)</span>,y)</span><br><span class="line">	if [ -f <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/fastboot ]; then $&#123;Q&#125;rm -rf <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/fastboot ; fi ;</span><br><span class="line">	if [ -f <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/S11defer_init ]; then $&#123;Q&#125;rm -rf <span class="variable">$(ROOTFS_DIR)</span>/etc/init.d/S11defer_init; fi ;</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># copy ko and mmf libs</span></span><br><span class="line">	$&#123;Q&#125;mkdir -p <span class="variable">$(BR_OVERLAY_DIR)</span>/mnt/system</span><br><span class="line">	$&#123;Q&#125;cp -arf $&#123;SYSTEM_OUT_DIR&#125;/* <span class="variable">$(BR_OVERLAY_DIR)</span>/mnt/system/</span><br><span class="line">	<span class="comment"># strip</span></span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -name <span class="string">&quot;*.ko&quot;</span> -type f -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_KERNEL)</span>strip --strip-unneeded &#123;&#125; \;</span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -name <span class="string">&quot;*.so*&quot;</span> -type f -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_KERNEL)</span>strip --strip-all &#123;&#125; \;</span><br><span class="line">	$&#123;Q&#125;find <span class="variable">$(BR_OVERLAY_DIR)</span> -executable -type f ! -name <span class="string">&quot;*.sh&quot;</span> ! -path <span class="string">&quot;*etc*&quot;</span> ! -path <span class="string">&quot;*.ko&quot;</span> -printf &#x27;striping %p\n&#x27; -exec <span class="variable">$(CROSS_COMPILE_SDK)</span>strip --strip-all &#123;&#125; 2&gt;/dev/null \;</span><br></pre></td></tr></table></figure>
+
+<p>如果非要 rootfs&#x2F;public 下的工具，也在加上这个，不建议！还是直接修改 buildroot 配置更好。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">define</span> TARGET_PACKAGE_INSTALL_CMD_BR</span><br><span class="line">	@echo &#x27;TARGET PACKAGE OUTPUT DIR=<span class="variable">$(BR_OVERLAY_DIR)</span>&#x27;;\</span><br><span class="line">	<span class="variable">$(<span class="built_in">foreach</span> t,<span class="variable">$(TARGET_PACKAGES)</span>,\</span></span><br><span class="line"><span class="variable">		$&#123;Q&#125;cd <span class="variable">$(TOP_DIR)</span>/ramdisk/rootfs/public/<span class="variable">$(t)</span>/<span class="variable">$(packages_arch)</span>/ &amp;&amp; \</span></span><br><span class="line"><span class="variable">		$&#123;Q&#125;find . \( ! -type d ! -name <span class="string">&quot;*.a&quot;</span> ! -path <span class="string">&quot;*include*&quot;</span> ! -name <span class="string">&quot;.gitkeep&quot;</span> \)</span> \</span><br><span class="line">			-printf &#x27;Copy Package file <span class="variable">$(TOP_DIR)</span>/ramdisk/rootfs/public/<span class="variable">$(t)</span>/<span class="variable">$(packages_arch)</span>/%p\n&#x27; \</span><br><span class="line">			-exec cp -a --remove-destination --parents &#x27;&#123;&#125;&#x27; <span class="variable">$(BR_OVERLAY_DIR)</span>/ \; ; )</span><br><span class="line"><span class="keyword">endef</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li><p>❗❗注意：buildroot 目录下的 output&#x2F;xxx 中的文件，并不会自动删除。也就是说，overlay中第一次添加了某个文件，后面不需要这个文件了，仅从overlay目录删除还不够，必须从 output&#x2F;xxx&#x2F;target 中删除，而且有时候奇奇怪怪的编译报错，直接清空 output&#x2F;xxx 文件夹也能解决。</p>
+<p>❗也不能简单地直接 <strong>只</strong> 删除output&#x2F;xxx&#x2F;target  中的文件，有一些文件、文件夹是在 buildroot 某个模块的编译过程中放进去的，只删除目标文件，而不清楚编译中间文件 output&#x2F;xxx&#x2F;build，那些文件也不会重新生成。</p>
+<p>如果在流程中自动清空 output&#x2F;xxx 文件夹，会导致编译时间变得很长。</p>
+</li>
+<li><p>如何去掉开机必须输入用户名、密码？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">修改 getty 服务</span><br><span class="line">如果你使用的是 getty 来管理终端登录，可以在 /etc/inittab 文件中设置自动登录。</span><br><span class="line"></span><br><span class="line">编辑 /etc/inittab：</span><br><span class="line">打开 /etc/inittab 文件（如果存在），找到类似于以下的行：</span><br><span class="line"></span><br><span class="line">1:2345:respawn:/sbin/getty 38400 tty1</span><br><span class="line">修改为：</span><br><span class="line"></span><br><span class="line">1:2345:respawn:/sbin/getty --noclear tty1</span><br><span class="line">创建自动登录的脚本：</span><br><span class="line">在 /etc/init.d/ 下创建一个脚本，命名为 autologin，内容如下：</span><br><span class="line"></span><br><span class="line">#!/bin/sh</span><br><span class="line">exec /bin/login -f your_username</span><br><span class="line">替换 your_username 为你的实际用户名。</span><br><span class="line"></span><br><span class="line">使脚本可执行：</span><br><span class="line">chmod +x /etc/init.d/autologin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不显示当前所在路径，增加 <code>/etc/profile</code> 文件。<code>\u: user \h: host</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/etc/profile</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="string">&quot;/lib:/lib/3rd:/usr/lib:/mnt/system/lib:/mnt/system/usr/lib:/mnt/system/usr/lib/3rd:/mnt/data/lib&quot;</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/mnt/system/usr/bin:/mnt/system/usr/sbin:/mnt/data/bin:/mnt/data/sbin&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$PS1</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="keyword">if</span> [ <span class="string">&quot;`id -u`&quot;</span> -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">export</span> PS1=<span class="string">&#x27;# &#x27;</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">export</span> PS1=<span class="string">&#x27;$ &#x27;</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PAGER=<span class="string">&#x27;/bin/more &#x27;</span></span><br><span class="line"><span class="built_in">export</span> EDITOR=<span class="string">&#x27;/bin/vi&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Source configuration files from /etc/profile.d</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> /etc/profile.d/*.sh ; <span class="keyword">do</span></span><br><span class="line">	<span class="keyword">if</span> [ -r <span class="string">&quot;<span class="variable">$i</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">		. <span class="variable">$i</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">	<span class="built_in">unset</span> i</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> HOSTNAME=<span class="string">&quot;<span class="subst">$(hostname)</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> OLDPWD=/root</span><br><span class="line"></span><br><span class="line"><span class="comment"># \u: user \h: host</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&#x27;$USER&#x27;</span> == <span class="string">&#x27;root&#x27;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">export</span> PS1=<span class="string">&#x27;[\u@\h]\w\# &#x27;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">export</span> PS1=<span class="string">&#x27;[\u@\h]\w\$ &#x27;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">&#x27;ls -alF&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> la=<span class="string">&#x27;ls -A&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> l=<span class="string">&#x27;ls -CF&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改之后，就显示 <code>[root@cvitek]~# </code></p>
+</li>
+<li><p>使用 erofs 只读文件系统后，&#x2F;var&#x2F;run 中也只读，导致一些动态生成的文件（如 PID 文件、socket 文件等）无法写入。增加 &#96;&#x2F;etc&#x2F;fstab 文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ramdisk/rootfs/common_arm/etc$ cat fstab</span><br><span class="line"># &lt;file system&gt; &lt;mount pt&gt;      &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;</span><br><span class="line">/dev/root       /               ext2    rw,noauto       0       1</span><br><span class="line">proc            /proc           proc    defaults        0       0</span><br><span class="line">devpts          /dev/pts        devpts  defaults,gid=5,mode=620,ptmxmode=0666   0       0</span><br><span class="line">tmpfs           /dev/shm        tmpfs   mode=0777       0       0</span><br><span class="line">tmpfs           /tmp            tmpfs   mode=1777       0       0</span><br><span class="line">tmpfs           /run            tmpfs   mode=0755,nosuid,nodev  0       0</span><br><span class="line">tmpfs           /var/run        tmpfs   mode=0755,nosuid,nodev  0       0</span><br><span class="line">tmpfs           /var/lock       tmpfs   mode=0755,nosuid,nodev  0       0</span><br><span class="line">tmpfs           /var/empty      tmpfs   mode=0755,nosuid,nodev  0       0</span><br><span class="line">sysfs           /sys            sysfs   defaults        0       0</span><br><span class="line">nodev           /sys/kernel/debug debugfs   defaults    0       0</span><br></pre></td></tr></table></figure></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://bloglizi.dpdns.org">wyxdlz54188</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://bloglizi.dpdns.org/2023/11/16/Cvitek-buildroot/">https://bloglizi.dpdns.org/2023/11/16/Cvitek-buildroot/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://bloglizi.dpdns.org" target="_blank">李子的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/%E6%A0%87%E7%AD%BE/Linux/">Linux</a><a class="post-meta__tags" href="/%E6%A0%87%E7%AD%BE/Buildroot/">Buildroot</a><a class="post-meta__tags" href="/%E6%A0%87%E7%AD%BE/Rootfs/">Rootfs</a><a class="post-meta__tags" href="/%E6%A0%87%E7%AD%BE/Cvitek/">Cvitek</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/" target="_blank"><img class="post-qr-code-img" src="/"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/" target="_blank"><img class="post-qr-code-img" src="/"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Twikoo</span><span id="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wyxdlz54188</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wyxdlz54188"><i class="fab fa-github"></i><span>关注</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cvitek-buildroot-%E6%89%93%E5%8C%85-rootfs-%E6%B5%81%E7%A8%8B%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Cvitek buildroot 打包 rootfs 流程介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rootfs-%E6%89%93%E5%8C%85%E6%B5%81%E7%A8%8B%E8%AF%B4%E6%98%8E"><span class="toc-number">3.</span> <span class="toc-text">rootfs 打包流程说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#br-rootfs-prepare"><span class="toc-number">3.1.</span> <span class="toc-text">br-rootfs-prepare</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#br-rootfs-pack"><span class="toc-number">3.2.</span> <span class="toc-text">br-rootfs-pack</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#buildroot-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="toc-number">4.</span> <span class="toc-text">buildroot 配置文件说明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E9%97%AE%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">网络问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8C%85-public-%E5%B7%A5%E5%85%B7%E9%97%AE%E9%A2%98"><span class="toc-number">4.2.</span> <span class="toc-text">打包 public 工具问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">4.3.</span> <span class="toc-text">其他</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/11/2025_03_11_14_37_25/" title="当年iOS_jalibreak的那些事">当年iOS_jalibreak的那些事</a><time datetime="2025-03-11T14:37:25.000Z" title="发表于 2025-03-11 14:37:25">2025-03-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/10/2025_3_10_6_42_00/" title="YDPEN_jailbreak：有道词典笔ADB权限获取教程">YDPEN_jailbreak：有道词典笔ADB权限获取教程</a><time datetime="2025-03-10T10:41:19.158Z" title="发表于 2025-03-10 10:41:19">2025-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/2025_03_07_20_40/" title="有道词典笔破解">有道词典笔破解</a><time datetime="2025-03-07T12:49:04.629Z" title="发表于 2025-03-07 12:49:04">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/2025_03_6_20_36_02/" title="探索iOS插件源">探索iOS插件源</a><time datetime="2025-03-06T20:36:02.000Z" title="发表于 2025-03-06 20:36:02">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/14/2025_02_14_20_20_08/" title="江中论坛">江中论坛</a><time datetime="2025-02-14T20:20:08.000Z" title="发表于 2025-02-14 20:20:08">2025-02-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By wyxdlz54188</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.liziweb.dedyn.io/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo.liziweb.dedyn.io/',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    GLOBAL_CONFIG_SITE.pageType === 'post' && getCount()
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liCn3Ikp2ztozmsj',
+      clientSecret: 'fa83990c50a9e1f9cd0d56e87f8a1058569684b5',
+      repo: 'hexopl',
+      owner: 'wyxdlz54188',
+      admin: ['wyxdlz54188'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || '62dff7d7b6139f6d64c9c7db12c81b0d'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Twikoo' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

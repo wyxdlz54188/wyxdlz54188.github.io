@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>李子的博客</title><meta name="author" content="wyxdlz54188"><meta name="copyright" content="wyxdlz54188"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="李子的博客">
+<meta property="og:url" content="https://bloglizi.dpdns.org/index.html">
+<meta property="og:site_name" content="李子的博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bloglizi.dpdns.org/img/avatar.png">
+<meta property="article:author" content="wyxdlz54188">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloglizi.dpdns.org/img/avatar.png"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://bloglizi.dpdns.org/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":"ture","top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: wyxdlz54188","link":"链接: ","source":"来源: 李子的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李子的博客',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page fixed" id="page-header" style="background-image: url(/img/bk.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">李子的博客</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">李子的博客</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/03/11/2025_03_11_14_37_25/" title="当年iOS_jalibreak的那些事"><i class="fas fa-thumbtack sticky"></i>当年iOS_jalibreak的那些事</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-03-11T14:37:25.000Z" title="发表于 2025-03-11 14:37:25">2025-03-11</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/03/11/2025_03_11_14_37_25/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/03/10/2025_3_10_6_42_00/" title="YDPEN_jailbreak：有道词典笔ADB权限获取教程">YDPEN_jailbreak：有道词典笔ADB权限获取教程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-03-10T10:41:19.158Z" title="发表于 2025-03-10 10:41:19">2025-03-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/03/10/2025_3_10_6_42_00/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">前言转载自听秋念，新定义有道词典笔的破解过程名为YDPEN_jalibreak。 有道词典笔早期好像使用的是安卓系统？但后面出的笔都不是安卓系统，而是基于linux的词典笔os。故即使开启有道词典笔的adb，依然无法实现安装apk等功能，仅限折腾着玩玩罢了。 操作有风险，玩机需谨慎。 因任何操作造成的包括但不限于变砖、炸 mini app 等损失，作者均不承担任何责任，也没有义务帮你修复。如有侵权，联系删除。 有道词典笔一直都带有adb开启入口，只需多次点击“法律监管”中的文本即可打开。按照提示输入adb shell auth，则会出现一个输入密码的提示YoudaoDictionaryPen-xxx&#39;s password:。但adb打开并不意味着结束，当你尝试使用adb连接设备时，会弹出“login with ‘adb shell auth’ to...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/03/07/2025_03_07_20_40/" title="有道词典笔破解">有道词典笔破解</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-03-07T12:49:04.629Z" title="发表于 2025-03-07 12:49:04">2025-03-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/03/07/2025_03_07_20_40/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">关于 YDPEN_jailbreak前言转载自听秋念 新定义有道词典笔的破解过程名为YDPEN_jalibreak  有道词典笔早期好像使用的是安卓系统？ 但后面出的笔都不是安卓系统 而是基于linux的词典笔os 故即使开启有道词典笔的adb依然无法实现安装apk等功能 仅限折腾着玩玩罢了。 操作有风险，玩机需谨慎。因任何操作造成的包括但不限**于变砖、炸 mini app ……**损失作者均不承担任何责任 也没有义务帮你修复 如有侵权联系删除 有道词典笔一直都带有adb开启入口 只需多次点击’法律监管’中的文本即可打开 按照提示输入adb shell auth则会出现一个输入密码的提示YoudaoDictionaryPen-xxx&#39;s password: 但adb打开并不意味着结束 当你尝试使用adb连接设备时 会弹出login with “adb shell auth” to continue. 在早期的系统版本中，这个密码被设置为CherryYoudao 但当词典笔os出现后 adb密码开始使用md5储存...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/03/06/2025_03_6_20_36_02/" title="探索iOS插件源">探索iOS插件源</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-03-06T20:36:02.000Z" title="发表于 2025-03-06 20:36:02">2025-03-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/03/06/2025_03_6_20_36_02/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/02/14/2025_02_14_20_20_08/" title="江中论坛">江中论坛</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-02-14T20:20:08.000Z" title="发表于 2025-02-14 20:20:08">2025-02-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/02/14/2025_02_14_20_20_08/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">你好江中校友，在这里你可以畅所欲言请登录github账号后即可评论森林冰火人下载Flash启动器下载Flash小游戏下载火狐浏览器下载麒麟970kernel下载flash大全下载 </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/02/14/2025_02_14_16_56_20/" title="提交博文的方法">提交博文的方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-02-14T16:56:20.000Z" title="发表于 2025-02-14 16:56:20">2025-02-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Hexo/">Hexo</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/02/14/2025_02_14_16_56_20/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">1.安装nodejswindows &lt;上网搜不掩饰了&gt;mac 安装brew，然后输入 12brew install nodejs npmnpm install hexo-cli -g iOS在App Store内安装ish应用 1234apk updateapk add bash nodejs npmnpm install hexo-cli -gapk upgrade 安卓安装Termux输入 1234pkg updatepkg upgradepkg install nodejs npmnpm install hexo-cli -g  2.创建博文在之前下的终端里输入 12hexo init blogcd blog 再次输入hexo new &#39;博文名称&#39;创建博文 使用Markdown语法编写/blog/source/_posts/博文名称.md的文件 3.私信李子上传博文</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/28/2025_01_28_18_35/" title="repo制作">repo制作</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-28T18:35:02.000Z" title="发表于 2025-01-28 18:35:02">2025-01-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/28/2025_01_28_18_35/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/25/2025_01_25_21_52/" title="theos无根插件适配">theos无根插件适配</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-25T21:52:56.000Z" title="发表于 2025-01-25 21:52:56">2025-01-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS%E7%A4%BE%E5%8C%BA/">iOS社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/25/2025_01_25_21_52/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">为了适配 Rootless 模式的 Theos 插件，你需要在Makefile中进行一些调整，以确保插件能够在无根越狱环境中正常运行。以下是适配 Rootless 模式的Makefile示例代码和说明： 适配 Rootless 模式的Makefile示例 12345678910111213141516171819202122232425262728## 设置 Rootless 模式ROOTLESS = 1ifeq ($(ROOTLESS),1)THEOS_PACKAGE_SCHEME = rootlessendif## 根据是否启用 Rootless 模式设置目标系统版本ifeq ($(THEOS_PACKAGE_SCHEME), rootless)TARGET = iphone:clang:latest:15.0elseTARGET = iphone:clang:latest:12.0endif## 包含 Theos 的通用配置include $(THEOS)/makefiles/common.mk## 定义插件名称和文件TWEAK_NAME =...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/25/2025_01_25_19_01/" title="机友论坛">机友论坛</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-25T19:01:21.000Z" title="发表于 2025-01-25 19:01:21">2025-01-25</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/25/2025_01_25_19_01/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/24/2025_01_24_22_26/" title="hexo gitalk 坑点">hexo gitalk 坑点</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-24T22:26:00.000Z" title="发表于 2025-01-24 22:26:00">2025-01-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Hexo/">Hexo</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/24/2025_01_24_22_26/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">gitalk坑点一.文件配置1.准备工作 • GitHub 账号：确保你有一个 GitHub 账号。 • GitHub 仓库：创建一个公共仓库用于存储评论。 • GitHub OAuth 应用：在 GitHub 的 Developer Settings 中创建一个 OAuth 应用。 • Application name：随意填写，例如“Gitalk Comments”。 • Homepage URL：填写你的博客首页 URL。 • Authorization callback URL：填写你的博客首页 URL。 • 完成注册后，记下生成的Client ID和Client Secret。 以上步骤即可完成 Gitalk 在 Butterfly 主题中的启用。如果遇到问题，请检查配置文件和代码是否正确，或者参考相关教程。 打开yourblog/themes/butterfly(主题)/_config.yml文件，搜索comments找到以下内容 123456789101112131415comments:  # Up to two comments system, the...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wyxdlz54188</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wyxdlz54188"><i class="fab fa-github"></i><span>关注</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/11/2025_03_11_14_37_25/" title="当年iOS_jalibreak的那些事">当年iOS_jalibreak的那些事</a><time datetime="2025-03-11T14:37:25.000Z" title="发表于 2025-03-11 14:37:25">2025-03-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/10/2025_3_10_6_42_00/" title="YDPEN_jailbreak：有道词典笔ADB权限获取教程">YDPEN_jailbreak：有道词典笔ADB权限获取教程</a><time datetime="2025-03-10T10:41:19.158Z" title="发表于 2025-03-10 10:41:19">2025-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/2025_03_07_20_40/" title="有道词典笔破解">有道词典笔破解</a><time datetime="2025-03-07T12:49:04.629Z" title="发表于 2025-03-07 12:49:04">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/2025_03_6_20_36_02/" title="探索iOS插件源">探索iOS插件源</a><time datetime="2025-03-06T20:36:02.000Z" title="发表于 2025-03-06 20:36:02">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/14/2025_02_14_20_20_08/" title="江中论坛">江中论坛</a><time datetime="2025-02-14T20:20:08.000Z" title="发表于 2025-02-14 20:20:08">2025-02-14</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Minecraft%E7%A4%BE%E5%8C%BA/"><span class="card-category-list-name">Minecraft社区</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/iOS%E7%A4%BE%E5%8C%BA/"><span class="card-category-list-name">iOS社区</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%85%B3%E4%BA%8E/"><span class="card-category-list-name">关于</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/%E6%A0%87%E7%AD%BE/Cvitek/" style="font-size: 1.1em; color: #999">Cvitek</a> <a href="/%E6%A0%87%E7%AD%BE/Buildroot/" style="font-size: 1.1em; color: #999">Buildroot</a> <a href="/%E6%A0%87%E7%AD%BE/Linux/" style="font-size: 1.1em; color: #999">Linux</a> <a href="/%E6%A0%87%E7%AD%BE/Rootfs/" style="font-size: 1.1em; color: #999">Rootfs</a> <a href="/%E6%A0%87%E7%AD%BE/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="font-size: 1.1em; color: #999">Minecraft服务器</a> <a href="/%E6%A0%87%E7%AD%BE/iOS%E7%8E%A9%E6%9C%BA/" style="font-size: 1.5em; color: #99a9bf">iOS玩机</a> <a href="/%E6%A0%87%E7%AD%BE/%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/" style="font-size: 1.3em; color: #99a1ac">博客网站</a> <a href="/%E6%A0%87%E7%AD%BE/Theos%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">Theos开发</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/03/">
+            <span class="card-archive-list-date">
+              三月 2025
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/02/">
+            <span class="card-archive-list-date">
+              二月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/01/">
+            <span class="card-archive-list-date">
+              一月 2025
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/06/">
+            <span class="card-archive-list-date">
+              六月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/11/">
+            <span class="card-archive-list-date">
+              十一月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">18</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-04-06T06:28:33.056Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By wyxdlz54188</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => { 
+  const getCommentUrl = () => {
+    const eleGroup = document.querySelectorAll('#recent-posts .article-title')
+    let urlArray = []
+    eleGroup.forEach(i=>{
+      urlArray.push(i.getAttribute('href'))
+    })
+    return urlArray
+  }
+
+  const getCount = () => {
+    const runTwikoo = () => {
+      twikoo.getCommentsCount({
+        envId: 'https://twikoo.liziweb.dedyn.io/',
+        region: '',
+        urls: getCommentUrl(),
+        includeReply: false
+      }).then(function (res) {
+        document.querySelectorAll('#recent-posts .twikoo-count').forEach((item,index) => {
+          item.textContent = res[index].count
+        })
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+
+      if (typeof twikoo === 'object') {
+        runTwikoo()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+      }
+  }
+
+  window.pjax ? getCount() : window.addEventListener('load', getCount)
+
+})()</script><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, 200))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["李子源中摘李 &#44; 乐趣无穷","李子博客之文 &#44; 饶有趣味"])
+  } else {
+    document.getElementById("subtitle").textContent = "李子源中摘李 &#44; 乐趣无穷"
+  }
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

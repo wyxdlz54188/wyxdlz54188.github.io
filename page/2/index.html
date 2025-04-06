@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>李子的博客</title><meta name="author" content="wyxdlz54188"><meta name="copyright" content="wyxdlz54188"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="李子的博客">
+<meta property="og:url" content="https://bloglizi.dpdns.org/page/2/index.html">
+<meta property="og:site_name" content="李子的博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bloglizi.dpdns.org/img/avatar.png">
+<meta property="article:author" content="wyxdlz54188">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloglizi.dpdns.org/img/avatar.png"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://bloglizi.dpdns.org/page/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":"ture","top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: wyxdlz54188","link":"链接: ","source":"来源: 李子的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '李子的博客',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page fixed" id="page-header" style="background-image: url(/img/bk.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">李子的博客</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">李子的博客</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/09/2025_01_09_16_31/" title="李子的服务器">李子的服务器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-09T16:31:00.000Z" title="发表于 2025-01-09 16:31:00">2025-01-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Minecraft%E7%A4%BE%E5%8C%BA/">Minecraft社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/09/2025_01_09_16_31/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">简介哈喽大家好我是你们的老李子，今天给大家带来的是李芒果空岛服务器，服务器不大人不多欢迎大家加入！ </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/05/2025_01_05_14_00/" title="Trollstore常用技巧">Trollstore常用技巧</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-05T14:00:08.000Z" title="发表于 2025-01-05 14:00:08">2025-01-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS%E7%A4%BE%E5%8C%BA/">iOS社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/05/2025_01_05_14_00/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">软件不可用相比大家一定遇到过trollstore的软件不可用的情况吧? 其实解决方法很简单1.打开 torellstore或者永久性助手 注销一下即可 </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/05/2025_01_05_2_07/" title="iOS系统文件目录解析">iOS系统文件目录解析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-05T02:07:02.000Z" title="发表于 2025-01-05 02:07:02">2025-01-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS%E7%A4%BE%E5%8C%BA/">iOS社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/05/2025_01_05_2_07/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">1、【&#x2F;Applications】 常用软件的安装目录  【&#x2F;private &#x2F;var&#x2F; mobile&#x2F;Media &#x2F;iphone video Recorder】录像文件存放目录  3、【&#x2F;private &#x2F;var&#x2F; mobile&#x2F;Media &#x2F;DCIM】相机拍摄的照片文件存放目录 4、【&#x2F;private&#x2F;var&#x2F; mobile &#x2F;Media&#x2F;iTunes_Control&#x2F;Music】iTunes上传的多媒体文件（例如MP3、MP4等）存放目录，文件没有被修改，但是文件名字被修改了，直接下载到电脑即可读取。 5、【&#x2F;private...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/04/2025_01_04_12_52/" title="iOS中的两个bootstrap解析">iOS中的两个bootstrap解析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-04T12:52:29.000Z" title="发表于 2025-01-04 12:52:29">2025-01-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS%E7%A4%BE%E5%8C%BA/">iOS社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/04/2025_01_04_12_52/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">前言你是否为iOS中的bootstarp这一单词很是困惑?不要担心李子这就来给大家解答。bootstrap 译为引导bootstarp 译为引导程序 而bootstarp并未在iOS的越狱史上被提及，但却有两个bootstrap??? 是的确有此事。 半越狱bootstrap作为iOS程序一名为roothide bootstrap&#x2F;隐藏型半越狱引导程序(即:半越狱)，虽说这roothide bootstrap名字是我起的但也并无道理1.这个越狱程序的作者名为roothide[很明显别有用意]2.这个越狱根目录与传统引导式无根越狱不同藏在应用安装目录，且每次越狱时的目录名字也不同。符合roothide这位作者的网名 引导式? 无根越狱??? 这nm是不是李子你搞错了?不不不，在所有无根越狱程序作者的推文中都有名叫无绳引导式越狱。额这就是无根越狱单词的机翻，但你有没有发现相同之处?...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/04/2025_01_04_11_07/" title="Theos的安装及theosinstaller使用教程">Theos的安装及theosinstaller使用教程</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-04T11:07:02.000Z" title="发表于 2025-01-04 11:07:02">2025-01-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/iOS%E7%A4%BE%E5%8C%BA/">iOS社区</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/04/2025_01_04_11_07/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">前言准备工具：一台可以使用(巨魔&#x2F;越狱)的🍎苹果设备&amp;&amp;越狱最好,巨魔可越狱者尽量越狱,不可越狱者安装bootstarp最新版本 安装那么想必大家已经准备好了吧！打开sileo越狱商店添加插件源添加李子源到sileo李子源 1https://wyxdlz54188.github.io/repo/ 1.打开插件源安装theos依赖及theosinstaller2.安装Newterm3无根越狱者用插件源里的插件半越狱&#x2F;roothide隐根 者安装roothide源的Newterm3插件theosinstaller下载Newterm3无根专用Newterm3汉化3.打开Newterm3输入 1sh theosinstaller.sh 即可自动安装开发Theos环境，安装过程中会卡住请耐心等待15~20分钟后退出应用后台重新打开即可安装成功 验证安装1.打开Newterm3输入 1$THEOS/usr/bin/nic.pl 如显示(1) (2)...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2025/01/04/2025_01_04_10_49/" title="关于李子">关于李子</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2025-01-04T10:49:54.000Z" title="发表于 2025-01-04 10:49:54">2025-01-04</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%85%B3%E4%BA%8E/">关于</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2025/01/04/2025_01_04_10_49/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">前言终于有人找到李子了想必是想来联系李子的吧 Github李子的Github 🔥🔥🔥插件源🔥🔥🔥漏洞不止，越狱不尽。李子源摘李，乐趣无极限。[李子源] 1https://lizirepo.us.kg/  BiliBili玩科技的李子 新玩游戏的李子- 旧已死 </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/06/19/2024_06_19_12_31/" title="如何优雅的使用Github Action服务来将Hexo部署到Github Pages">如何优雅的使用Github Action服务来将Hexo部署到Github Pages</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-06-19T12:31:53.000Z" title="发表于 2024-06-19 12:31:53">2024-06-19</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Hexo/">Hexo</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2024/06/19/2024_06_19_12_31/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">本教程由木子dn提供李子翻版 参考文章Bilibili视频教程-9分钟零成本搭建自动化部署个人博客(Hexo + Github Action + Page)Hexo官方文档利用 GitHub Action 自动部署 Hexo 博客Hexo主题-Icarus快速上手 前提条件当前PC环境中有Node和Git。版本可以参考Hexo文档。 文章中出现的yourusername为Github用户名，your-repo为仓库名。 1. 初始化Hexo安装脚手架，初始化hexo，这会新建blog文件夹，进入后安装依赖。 1234npm install -g hexo-clihexo init blogcd blognpm install  2. 初始化仓库可以选择利用VSCode等软件直接对项目开源到github仓库。 也可以手动去github创建一个空仓库，然后手动在命令行中推送。 12345git initgit remote add origin https://github.com/yourusername/your-repo.gitgit add .git commit -m...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/16/Cvitek-buildroot/" title="buildroot 打包 rootfs">buildroot 打包 rootfs</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-16T23:45:42.000Z" title="发表于 2023-11-16 23:45:42">2023-11-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a class="twikoo-count" href="/2023/11/16/Cvitek-buildroot/#post-comment"><i class="fa-solid fa-spinner fa-spin"></i></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">Cvitek buildroot 打包 rootfs 流程介绍 基于 https://github.com/sophgo/cvi_mmf_sdk&#x2F;tree&#x2F;v4.1.0 的实现。  概述在 cvi_mmf_sdk 中，支持两种生成 rootfs 的方式：  基于 ramdisk 目录下的文件系统。 基于 buildroot 打包生成文件系统。  前者仅保留了常用的一些工具，因此生成的文件系统较小，不过新增工具比较麻烦。后者方便用户自己控制需要打包哪些工具。 默认使用第一种方式来生成文件系统，可通过在板子的配置文件中加上 CONFIG_BUILDROOT_FS=y （如 cv1812cp_sophpi_duo_sd_defconfig#L30 中的例子），以启用 buildroot 来生成文件系统。 rootfs 打包流程说明在 source cvisetup.sh 之后，就可以使用 pack_rootfs 命令来打包文件系统了。它本质上是定义在 common_functions.sh 中的一个 shell 函数，在设置必要的环境变量后，通过 make...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wyxdlz54188</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wyxdlz54188"><i class="fab fa-github"></i><span>关注</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/11/2025_03_11_14_37_25/" title="当年iOS_jalibreak的那些事">当年iOS_jalibreak的那些事</a><time datetime="2025-03-11T14:37:25.000Z" title="发表于 2025-03-11 14:37:25">2025-03-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/10/2025_3_10_6_42_00/" title="YDPEN_jailbreak：有道词典笔ADB权限获取教程">YDPEN_jailbreak：有道词典笔ADB权限获取教程</a><time datetime="2025-03-10T10:41:19.158Z" title="发表于 2025-03-10 10:41:19">2025-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/2025_03_07_20_40/" title="有道词典笔破解">有道词典笔破解</a><time datetime="2025-03-07T12:49:04.629Z" title="发表于 2025-03-07 12:49:04">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/2025_03_6_20_36_02/" title="探索iOS插件源">探索iOS插件源</a><time datetime="2025-03-06T20:36:02.000Z" title="发表于 2025-03-06 20:36:02">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/14/2025_02_14_20_20_08/" title="江中论坛">江中论坛</a><time datetime="2025-02-14T20:20:08.000Z" title="发表于 2025-02-14 20:20:08">2025-02-14</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Hexo/"><span class="card-category-list-name">Hexo</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Minecraft%E7%A4%BE%E5%8C%BA/"><span class="card-category-list-name">Minecraft社区</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/iOS%E7%A4%BE%E5%8C%BA/"><span class="card-category-list-name">iOS社区</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%85%B3%E4%BA%8E/"><span class="card-category-list-name">关于</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/%E6%A0%87%E7%AD%BE/Cvitek/" style="font-size: 1.1em; color: #999">Cvitek</a> <a href="/%E6%A0%87%E7%AD%BE/Buildroot/" style="font-size: 1.1em; color: #999">Buildroot</a> <a href="/%E6%A0%87%E7%AD%BE/Linux/" style="font-size: 1.1em; color: #999">Linux</a> <a href="/%E6%A0%87%E7%AD%BE/Rootfs/" style="font-size: 1.1em; color: #999">Rootfs</a> <a href="/%E6%A0%87%E7%AD%BE/Minecraft%E6%9C%8D%E5%8A%A1%E5%99%A8/" style="font-size: 1.1em; color: #999">Minecraft服务器</a> <a href="/%E6%A0%87%E7%AD%BE/iOS%E7%8E%A9%E6%9C%BA/" style="font-size: 1.5em; color: #99a9bf">iOS玩机</a> <a href="/%E6%A0%87%E7%AD%BE/%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/" style="font-size: 1.3em; color: #99a1ac">博客网站</a> <a href="/%E6%A0%87%E7%AD%BE/Theos%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">Theos开发</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/03/">
+            <span class="card-archive-list-date">
+              三月 2025
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/02/">
+            <span class="card-archive-list-date">
+              二月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/01/">
+            <span class="card-archive-list-date">
+              一月 2025
+            </span>
+            <span class="card-archive-list-count">10</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2024/06/">
+            <span class="card-archive-list-date">
+              六月 2024
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2023/11/">
+            <span class="card-archive-list-date">
+              十一月 2023
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">18</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-04-06T06:28:33.056Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By wyxdlz54188</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => { 
+  const getCommentUrl = () => {
+    const eleGroup = document.querySelectorAll('#recent-posts .article-title')
+    let urlArray = []
+    eleGroup.forEach(i=>{
+      urlArray.push(i.getAttribute('href'))
+    })
+    return urlArray
+  }
+
+  const getCount = () => {
+    const runTwikoo = () => {
+      twikoo.getCommentsCount({
+        envId: 'https://twikoo.liziweb.dedyn.io/',
+        region: '',
+        urls: getCommentUrl(),
+        includeReply: false
+      }).then(function (res) {
+        document.querySelectorAll('#recent-posts .twikoo-count').forEach((item,index) => {
+          item.textContent = res[index].count
+        })
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+
+      if (typeof twikoo === 'object') {
+        runTwikoo()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(runTwikoo)
+      }
+  }
+
+  window.pjax ? getCount() : window.addEventListener('load', getCount)
+
+})()</script><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, 200))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["李子源中摘李 &#44; 乐趣无穷","李子博客之文 &#44; 饶有趣味"])
+  } else {
+    document.getElementById("subtitle").textContent = "李子源中摘李 &#44; 乐趣无穷"
+  }
+}
+typedJSFn.run(subtitleType)</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

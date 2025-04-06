@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>hexo gitalk 坑点 | 李子的博客</title><meta name="author" content="wyxdlz54188"><meta name="copyright" content="wyxdlz54188"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="gitalk坑点一.文件配置1.准备工作 • GitHub 账号：确保你有一个 GitHub 账号。 • GitHub 仓库：创建一个公共仓库用于存储评论。 • GitHub OAuth 应用：在 GitHub 的 Developer Settings 中创建一个 OAuth 应用。 • Application name：随意填写，例如“Gitalk Comments”。 • Homepage U">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo gitalk 坑点">
+<meta property="og:url" content="https://bloglizi.dpdns.org/2025/01/24/2025_01_24_22_26/index.html">
+<meta property="og:site_name" content="李子的博客">
+<meta property="og:description" content="gitalk坑点一.文件配置1.准备工作 • GitHub 账号：确保你有一个 GitHub 账号。 • GitHub 仓库：创建一个公共仓库用于存储评论。 • GitHub OAuth 应用：在 GitHub 的 Developer Settings 中创建一个 OAuth 应用。 • Application name：随意填写，例如“Gitalk Comments”。 • Homepage U">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bloglizi.dpdns.org/img/avatar.png">
+<meta property="article:published_time" content="2025-01-24T22:26:00.000Z">
+<meta property="article:modified_time" content="2025-04-06T06:28:07.995Z">
+<meta property="article:author" content="wyxdlz54188">
+<meta property="article:tag" content="博客网站">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bloglizi.dpdns.org/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "hexo gitalk 坑点",
+  "url": "https://bloglizi.dpdns.org/2025/01/24/2025_01_24_22_26/",
+  "image": "https://bloglizi.dpdns.org/img/avatar.png",
+  "datePublished": "2025-01-24T22:26:00.000Z",
+  "dateModified": "2025-04-06T06:28:07.995Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "wyxdlz54188",
+      "url": "https://bloglizi.dpdns.org/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://bloglizi.dpdns.org/2025/01/24/2025_01_24_22_26/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":"ture","top_n_per_article":3,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":150,"languages":{"author":"作者: wyxdlz54188","link":"链接: ","source":"来源: 李子的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'hexo gitalk 坑点',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">李子的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">hexo gitalk 坑点</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/2025/02/14/2025_02_14_20_20_08/"><span> 江中论坛</span></a></div><div class="menus_item"><a class="site-page" href="/2025/01/25/2025_01_25_19_01/"><span> 机友论坛</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%85%B3%E4%BA%8E/"><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">hexo gitalk 坑点</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-24T22:26:00.000Z" title="发表于 2025-01-24 22:26:00">2025-01-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-06T06:28:07.995Z" title="更新于 2025-04-06 06:28:07">2025-04-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Hexo/">Hexo</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="gitalk坑点"><a href="#gitalk坑点" class="headerlink" title="gitalk坑点"></a>gitalk坑点</h3><h2 id="一-文件配置"><a href="#一-文件配置" class="headerlink" title="一.文件配置"></a>一.文件配置</h2><p>1.准备工作</p>
+<p>• GitHub 账号：确保你有一个 GitHub 账号。</p>
+<p>• GitHub 仓库：创建一个公共仓库用于存储评论。</p>
+<p>• GitHub OAuth 应用：在 GitHub 的 Developer Settings 中创建一个 OAuth 应用。</p>
+<p>• Application name：随意填写，例如“Gitalk Comments”。</p>
+<p>• Homepage URL：填写你的博客首页 URL。</p>
+<p>• Authorization callback URL：填写你的博客首页 URL。</p>
+<p>• 完成注册后，记下生成的<code>Client ID</code>和<code>Client Secret</code>。</p>
+<p>以上步骤即可完成 Gitalk 在 Butterfly 主题中的启用。如果遇到问题，请检查配置文件和代码是否正确，或者参考相关教程。</p>
+<p>打开<code>yourblog/themes/butterfly(主题)/_config.yml</code>文件，搜索<code>comments</code>找到以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">comments:</span><br><span class="line">  # Up to two comments system, the first will be shown as default</span><br><span class="line">  # Leave it empty if you don&#x27;t need comments</span><br><span class="line">  # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk</span><br><span class="line">  # Format of two comments system : Disqus,Waline</span><br><span class="line">  use: Gitalk,Valine  # use内输入Gitalk ，这里做演示Valine可不用</span><br><span class="line">  # Display the comment name next to the button</span><br><span class="line">  text: true # 按照李子的配置</span><br><span class="line">  # Lazyload: The comment system will be load when comment element enters the browser&#x27;s viewport.</span><br><span class="line">  # If you set it to true, the comment count will be invalid</span><br><span class="line">  lazyload: true # 按照李子的配置</span><br><span class="line">  # Display comment count in post&#x27;s top_img</span><br><span class="line">  count: true # 按照李子的配置</span><br><span class="line">  # Display comment count in Home Page</span><br><span class="line">  card_post_count: false # 按照李子的配置</span><br></pre></td></tr></table></figure>
+<p>  想必大家已经设置完毕了吧！<br>  继续搜索<code>Gitalk</code><br>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  # Gitalk</span><br><span class="line"># https://github.com/gitalk/gitalk</span><br><span class="line">gitalk:</span><br><span class="line">  client_id: Ov23liCn3Ikp2ztozmsj # 每个人都有所不同，添github app 给的</span><br><span class="line">  client_secret: fa83990c50a9e1f9cd0d56e87f8a1058569684b5 # 没人有所不同，添github app给的</span><br><span class="line">  repo: hexopl # gittalk评论仓库 单独见一个仓库</span><br><span class="line">  owner: wyxdlz54188 # 所有者名称github</span><br><span class="line">  admin: wyxdlz54188 # 所有者名称github</span><br><span class="line">  language: zh-CN # 照李子改就是</span><br><span class="line">  perPage: 10 # Pagination size, with maximum 100.</span><br><span class="line">  distractionFreeMode: false # Facebook-like distraction free mode.</span><br><span class="line">  pagerDirection: last # Comment sorting direction, available values are last and first.</span><br><span class="line">  createIssueManually: false # Gitalk will create a corresponding github issue for your every single page automatically</span><br><span class="line">  option:</span><br></pre></td></tr></table></figure></p>
+<p>  以上没有特殊标记的都照改就是啦</p>
+<h2 id="二、李子遇到的报错"><a href="#二、李子遇到的报错" class="headerlink" title="二、李子遇到的报错"></a>二、李子遇到的报错</h2><p>说句实在话按照其它的教程改来改去还是那两个报错没任什么问题，怎么办呢<br>很简单</p>
+<p>开始以为是<code>OAuth Application</code>中我的路径写错了，后来发现没啥毛病。然后<code>使用了GitHub登录</code>了还是存在这个问题，我再到我的仓库里面去看，发现<code>在issues下</code>根本没有一条issue。按理来说<code>只要GitHub账号第一次登录了就会给当前文章初始化一个issue</code>，我突然想起了文章的<code>初始化权限问题</code>，<code>而且我GitHub账号有几个</code>，会不会是使用 没有仓库所有权限的账号 登录。然后，使用##所有者账号##登录，发现##能够评论##了，而且在仓库的issues中多了一条属于该文章的issue。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://bloglizi.dpdns.org">wyxdlz54188</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://bloglizi.dpdns.org/2025/01/24/2025_01_24_22_26/">https://bloglizi.dpdns.org/2025/01/24/2025_01_24_22_26/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://bloglizi.dpdns.org" target="_blank">李子的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/%E6%A0%87%E7%AD%BE/%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/">博客网站</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/" target="_blank"><img class="post-qr-code-img" src="/"/></a><div class="post-qr-code-desc"></div></li><li class="reward-item"><a href="/" target="_blank"><img class="post-qr-code-img" src="/"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2024/06/19/2024_06_19_12_31/" title="如何优雅的使用Github Action服务来将Hexo部署到Github Pages"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2025-04-06</div><div class="info-item-2">如何优雅的使用Github Action服务来将Hexo部署到Github Pages</div></div><div class="info-2"><div class="info-item-1">本教程由木子dn提供李子翻版 参考文章Bilibili视频教程-9分钟零成本搭建自动化部署个人博客(Hexo + Github Action + Page)Hexo官方文档利用 GitHub Action 自动部署 Hexo 博客Hexo主题-Icarus快速上手 前提条件当前PC环境中有Node和Git。版本可以参考Hexo文档。 文章中出现的yourusername为Github用户名，your-repo为仓库名。 1. 初始化Hexo安装脚手架，初始化hexo，这会新建blog文件夹，进入后安装依赖。 1234npm install -g hexo-clihexo init blogcd blognpm install  2. 初始化仓库可以选择利用VSCode等软件直接对项目开源到github仓库。 也可以手动去github创建一个空仓库，然后手动在命令行中推送。 12345git initgit remote add origin https://github.com/yourusername/your-repo.gitgit add .git commit -m...</div></div></div></a><a class="pagination-related" href="/2025/02/14/2025_02_14_16_56_20/" title="提交博文的方法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="fas fa-history fa-fw"></i> 2025-04-06</div><div class="info-item-2">提交博文的方法</div></div><div class="info-2"><div class="info-item-1">1.安装nodejswindows &lt;上网搜不掩饰了&gt;mac 安装brew，然后输入 12brew install nodejs npmnpm install hexo-cli -g iOS在App Store内安装ish应用 1234apk updateapk add bash nodejs npmnpm install hexo-cli -gapk upgrade 安卓安装Termux输入 1234pkg updatepkg upgradepkg install nodejs npmnpm install hexo-cli -g  2.创建博文在之前下的终端里输入 12hexo init blogcd blog 再次输入hexo new &#39;博文名称&#39;创建博文 使用Markdown语法编写/blog/source/_posts/博文名称.md的文件 3.私信李子上传博文</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Twikoo</span><span id="switch-btn"></span><span class="second-comment">Gitalk</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">wyxdlz54188</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/%E6%A0%87%E7%AD%BE/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wyxdlz54188"><i class="fab fa-github"></i><span>关注</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#gitalk%E5%9D%91%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">gitalk坑点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">一.文件配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9D%8E%E5%AD%90%E9%81%87%E5%88%B0%E7%9A%84%E6%8A%A5%E9%94%99"><span class="toc-number"></span> <span class="toc-text">二、李子遇到的报错</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/11/2025_03_11_14_37_25/" title="当年iOS_jalibreak的那些事">当年iOS_jalibreak的那些事</a><time datetime="2025-03-11T14:37:25.000Z" title="发表于 2025-03-11 14:37:25">2025-03-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/10/2025_3_10_6_42_00/" title="YDPEN_jailbreak：有道词典笔ADB权限获取教程">YDPEN_jailbreak：有道词典笔ADB权限获取教程</a><time datetime="2025-03-10T10:41:19.158Z" title="发表于 2025-03-10 10:41:19">2025-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/2025_03_07_20_40/" title="有道词典笔破解">有道词典笔破解</a><time datetime="2025-03-07T12:49:04.629Z" title="发表于 2025-03-07 12:49:04">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/06/2025_03_6_20_36_02/" title="探索iOS插件源">探索iOS插件源</a><time datetime="2025-03-06T20:36:02.000Z" title="发表于 2025-03-06 20:36:02">2025-03-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/14/2025_02_14_20_20_08/" title="江中论坛">江中论坛</a><time datetime="2025-02-14T20:20:08.000Z" title="发表于 2025-02-14 20:20:08">2025-02-14</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By wyxdlz54188</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.liziweb.dedyn.io/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo.liziweb.dedyn.io/',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    GLOBAL_CONFIG_SITE.pageType === 'post' && getCount()
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  const initGitalk = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGitalk = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const gitalk = new Gitalk({
+      clientID: 'Ov23liCn3Ikp2ztozmsj',
+      clientSecret: 'fa83990c50a9e1f9cd0d56e87f8a1058569684b5',
+      repo: 'hexopl',
+      owner: 'wyxdlz54188',
+      admin: ['wyxdlz54188'],
+      updateCountCallback: commentCount,
+      ...option,
+      id: isShuoshuo ? path : (option && option.id) || 'e4eecf8fcb44b0c22fad3d0e88d8f323'
+    })
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async(el, path) => {
+    if (typeof Gitalk === 'function') initGitalk(el, path)
+    else {
+      await btf.getCSS('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css')
+      await btf.getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js')
+      initGitalk(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Gitalk'
+      ? window.shuoshuoComment = { loadComment: loadGitalk }
+      : window.loadOtherComment = loadGitalk
+    return
+  }
+
+  if ('Twikoo' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
